@@ -92,7 +92,7 @@ class Event : public EventBase {
 class AutoResetEvent : public EventBase {
  public:
   AutoResetEvent() : AutoResetEvent(false) {}
-  AutoResetEvent(bool set) : EventBase(set, false) {}
+  AutoResetEvent(bool set) : EventBase(set, true) {}
 };
 
 } // namespace cppsync

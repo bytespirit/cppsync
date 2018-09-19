@@ -8,12 +8,10 @@
  *
  */
 
-
 #include "gtest/gtest.h"
 
 #include "cppsync/event.h"
 
-#include <chrono>
 #include <thread>
 
 TEST(EventTest, ManualResetEvent) {
@@ -24,11 +22,9 @@ TEST(EventTest, ManualResetEvent) {
       event.Wait();
       done = true;
     });
-    std::this_thread::sleep_for(std::chrono::seconds(1));
     event.Set();
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    EXPECT_TRUE(done);
     thread.join();
+    EXPECT_TRUE(done);
   }
   {
     done = false;
@@ -36,9 +32,8 @@ TEST(EventTest, ManualResetEvent) {
       event.Wait();
       done = true;
     });
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    EXPECT_TRUE(done);
     thread.join();
+    EXPECT_TRUE(done);
   }
   {
     done = false;
@@ -52,4 +47,34 @@ TEST(EventTest, ManualResetEvent) {
 }
 
 TEST(EventTest, AutoResetEvent) {
+  bool done = false;
+  bytespirit::cppsync::AutoResetEvent event;
+  {
+    auto thread = std::thread([&] {
+      event.Wait();
+      done = true;
+    });
+    event.Set();
+    thread.join();
+    EXPECT_TRUE(done);
+  }
+  {
+    done = false;
+    auto thread = std::thread([&] {
+      // NOTE: The event is auto reseted
+      done = event.Wait(std::chrono::seconds(1));
+    });
+    thread.join();
+    EXPECT_FALSE(done);
+  }
+  {
+    done = false;
+    auto thread = std::thread([&] {
+      event.Wait();
+      done = true;
+    });
+    event.Set();
+    thread.join();
+    EXPECT_TRUE(done);
+  }
 }

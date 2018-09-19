@@ -41,21 +41,25 @@ class Barrier : public Lock {
     std::unique_lock<std::mutex> lk(m_);
     return cv_.wait_until(lk, deadline, [this] { return completed_; });
   }
+  // Add 1 barrier
+  auto Add() -> void {
+    Add(1);
+  }
   // Add more barriers
   auto Add(int count) -> void {
-    if (count > 0 && !completed_) {
+    if (count > 0 && !completed_ && !frozen_) {
       std::unique_lock<std::mutex> lk(m_);
-      if (!completed_) {
-        count_ += count
+      if (!completed_ && !frozen_) {
+        count_ += count;
       }
     }
   }
-  // Resolve some barriers
-  auto Resolve(int count) -> void {
-    if (count > 0 && !completed_) {
+  // Freeze this barrier. Add will be invalid after calling this.
+  auto Freeze() -> void {
+    if (!frozen_) {
       std::unique_lock<std::mutex> lk(m_);
-      if (!completed_) {
-        count_ -= count;
+      if (!frozen_) {
+        frozen_ = true;
         if (count_ <= 0) {
           completed_ = true;
           cv_.notify_all();
@@ -63,14 +67,32 @@ class Barrier : public Lock {
       }
     }
   }
+  // Remove 1 barrier
+  auto Done() -> void {
+    Done(1);
+  }
+  // Remove some barriers
+  auto Done(int count) -> void {
+    if (count > 0 && !completed_) {
+      std::unique_lock<std::mutex> lk(m_);
+      if (!completed_) {
+        count_ -= count;
+        if (count_ <= 0 && frozen_) {
+          completed_ = true;
+          cv_.notify_all();
+        }
+      }
+    }
+  }
   // Check if the barrier is completed
-  auto IsCompleted() -> void {
+  auto IsCompleted() -> bool {
     return completed_;
   }
 
  private:
   int count_;
-  int completed_;
+  bool frozen_;
+  bool completed_;
   std::mutex m_;
   std::condition_variable cv_;
 };

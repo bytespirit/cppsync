@@ -23,18 +23,19 @@ namespace cppsync {
 // Semaphore implements the Semaphore lock
 class Semaphore : public Lock {
  public:
+  Semaphore() : Semaphore(0) {}
   Semaphore(int count) : count_(count > 0 ? count : 0) {}
 
   // Wait for the lock
   auto Wait() -> void override {
     std::unique_lock<std::mutex> lk(m_);
-    cv_.wait(lk, [this] { count_ > 0; });
+    cv_.wait(lk, [this] { return count_ > 0; });
     OnOneWakedUp();
   }
   // Wait for the lock with timeout
   auto Wait(std::chrono::seconds timeout) -> bool override {
     std::unique_lock<std::mutex> lk(m_);
-    if (cv_.wait_for(lk, timeout, [this] { count_ > 0; })) {
+    if (cv_.wait_for(lk, timeout, [this] { return count_ > 0; })) {
       OnOneWakedUp();
       return true;
     }
@@ -43,17 +44,21 @@ class Semaphore : public Lock {
   // Wait for the lock with deadline
   auto Wait(std::chrono::system_clock::time_point deadline) -> bool override {
     std::unique_lock<std::mutex> lk(m_);
-    if (cv_.wait_until(lk, deadline, [this] { count_ > 0; })) {
+    if (cv_.wait_until(lk, deadline, [this] { return count_ > 0; })) {
       OnOneWakedUp();
       return true;
     }
     return false;
   }
-  // Release some barriers
+  // Release
+  auto Release() -> void {
+    Release(1);
+  }
+  // Release
   auto Release(int count) -> void {
     if (count > 0) {
       std::unique_lock<std::mutex> lk(m_);
-      count_ += count
+      count_ += count;
       if (count == 1) {
         cv_.notify_one();
       } else {

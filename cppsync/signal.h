@@ -26,6 +26,7 @@ namespace cppsync {
 // When a signal node of the `chain` or `tree` is emitted, all children signal nodes will be emitted too.
 class Signal : public Lock {
  public:
+  Signal() = default;
   // Signal is not movable
   Signal(Signal&&) = delete;
 
@@ -86,13 +87,24 @@ class Signal : public Lock {
     }
   }
   // Get emitted
-  auto get_emitted() -> void {
+  auto get_emitted() -> bool {
     return emitted_;
+  }
+
+  // New creates a new Signal object
+  static auto New() -> std::shared_ptr<Signal> {
+    return std::make_shared<Signal>();
+  }
+  // With creates a new Signal object as the child of the given signal object
+  static auto With(const std::shared_ptr<Signal>& signal) -> std::shared_ptr<Signal> {
+    auto new_signal = std::make_shared<Signal>();
+    signal->AddChild(new_signal);
+    return new_signal;
   }
 
  private:
   bool emitted_;
-  std::mutex_;
+  std::mutex m_;
   std::condition_variable cv_;
   std::unordered_map<uintptr_t, std::weak_ptr<Signal>> children_;
 };
