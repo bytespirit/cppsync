@@ -46,6 +46,14 @@ cc_library(
 )
 
 cc_library(
+    name = "waiting_queue",
+    hdrs = ["waiting_queue.h"],
+    srcs = ["waiting_queue.cc"],
+    copts = ["-std=c++1z"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
     name = "sync",
     hdrs = ["sync.h"],
     deps = [
@@ -53,6 +61,7 @@ cc_library(
         ":barrier",
         ":semaphore",
         ":signal",
+        ":waiting_queue",
     ],
     copts = ["-std=c++1z"],
     visibility = ["//visibility:public"],
