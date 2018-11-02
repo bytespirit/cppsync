@@ -26,7 +26,7 @@ namespace cppsync {
 // When a signal node of the `chain` or `tree` is emitted, all children signal nodes will be emitted too.
 class Signal : public Lock {
  public:
-  Signal() = default;
+  Signal() : emitted_(false) {}
   // Signal is not movable
   Signal(Signal&&) = delete;
 

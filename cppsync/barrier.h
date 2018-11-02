@@ -24,7 +24,10 @@ namespace cppsync {
 class Barrier : public Lock {
  public:
   Barrier() : Barrier(0) {}
-  Barrier(int count) : count_(count > 0 ? count : 0) {}
+  Barrier(int count)
+      : count_(count > 0 ? count : 0),
+        frozen_(false),
+        completed_(false) {}
 
   // Wait for the lock
   auto Wait() -> void override {
