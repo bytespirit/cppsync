@@ -8,13 +8,13 @@
  *
  */
 
-#ifndef GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_LOCK_H_
-#define GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_LOCK_H_
+#ifndef GITHUB_BYTESPIRIT_CPPSYNC_SYNC_LOCK_H_
+#define GITHUB_BYTESPIRIT_CPPSYNC_SYNC_LOCK_H_
 
 #include <chrono>
 
 namespace bytespirit {
-namespace cppsync {
+namespace sync {
 
 // Lock is the base class of all kinds of locks
 class Lock {
@@ -34,7 +34,7 @@ class Lock {
   auto virtual Wait(std::chrono::system_clock::time_point deadline) -> bool = 0;
 };
 
-} // namespace cppsync
-} // namespace bytespirit
+}  // namespace sync
+}  // namespace bytespirit
 
-#endif // GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_LOCK_H_
+#endif  // GITHUB_BYTESPIRIT_CPPSYNC_SYNC_LOCK_H_

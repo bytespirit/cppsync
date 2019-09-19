@@ -10,14 +10,14 @@
 
 #include "gtest/gtest.h"
 
-#include "cppsync/barrier.h"
+#include "sync/barrier.h"
 
 #include <thread>
 #include <memory>
 #include <chrono>
 
 TEST(BarrierTest, FromZero) {
-  bytespirit::cppsync::Barrier barrier;
+  bytespirit::sync::Barrier barrier;
   bool flags[100];
   std::vector<std::unique_ptr<std::thread>> threads;
   for (int i = 0; i < 100; ++i) {

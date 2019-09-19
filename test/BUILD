@@ -4,7 +4,7 @@ cc_test(
     copts = ["-Iexternal/gtest/include", "-std=c++1z"],
     deps = [
         "@com_google_googletest//:gtest_main",
-        "//cppsync:event",
+        "//sync:event",
     ],
 )
 
@@ -14,7 +14,7 @@ cc_test(
     copts = ["-Iexternal/gtest/include", "-std=c++1z"],
     deps = [
         "@com_google_googletest//:gtest_main",
-        "//cppsync:barrier",
+        "//sync:barrier",
     ],
 )
 
@@ -24,7 +24,7 @@ cc_test(
     copts = ["-Iexternal/gtest/include", "-std=c++1z"],
     deps = [
         "@com_google_googletest//:gtest_main",
-        "//cppsync:semaphore",
+        "//sync:semaphore",
     ],
 )
 
@@ -34,6 +34,6 @@ cc_test(
     copts = ["-Iexternal/gtest/include", "-std=c++1z"],
     deps = [
         "@com_google_googletest//:gtest_main",
-        "//cppsync:signal",
+        "//sync:signal",
     ],
 )

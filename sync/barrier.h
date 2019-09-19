@@ -8,26 +8,23 @@
  *
  */
 
-#ifndef GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_BARRIER_H_
-#define GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_BARRIER_H_
+#ifndef GITHUB_BYTESPIRIT_CPPSYNC_SYNC_BARRIER_H_
+#define GITHUB_BYTESPIRIT_CPPSYNC_SYNC_BARRIER_H_
 
-#include <mutex>
 #include <chrono>
 #include <condition_variable>
+#include <mutex>
 
 #include "lock.h"
 
 namespace bytespirit {
-namespace cppsync {
+namespace sync {
 
 // Barrier implements the barrier lock
 class Barrier : public Lock {
  public:
   Barrier() : Barrier(0) {}
-  Barrier(int count)
-      : count_(count > 0 ? count : 0),
-        frozen_(false),
-        completed_(false) {}
+  Barrier(int count) : count_(count > 0 ? count : 0), frozen_(false), completed_(false) {}
 
   // Wait for the lock
   auto Wait() -> void override {
@@ -45,9 +42,7 @@ class Barrier : public Lock {
     return cv_.wait_until(lk, deadline, [this] { return completed_; });
   }
   // Add 1 barrier
-  auto Add() -> void {
-    Add(1);
-  }
+  auto Add() -> void { Add(1); }
   // Add more barriers
   auto Add(int count) -> void {
     if (count > 0 && !completed_ && !frozen_) {
@@ -71,9 +66,7 @@ class Barrier : public Lock {
     }
   }
   // Remove 1 barrier
-  auto Done() -> void {
-    Done(1);
-  }
+  auto Done() -> void { Done(1); }
   // Remove some barriers
   auto Done(int count) -> void {
     if (count > 0 && !completed_) {
@@ -88,9 +81,7 @@ class Barrier : public Lock {
     }
   }
   // Check if the barrier is completed
-  auto IsCompleted() -> bool {
-    return completed_;
-  }
+  auto IsCompleted() -> bool { return completed_; }
 
  private:
   int count_;
@@ -100,7 +91,7 @@ class Barrier : public Lock {
   std::condition_variable cv_;
 };
 
-} // namespace cppsync
-} // namespace bytespirit
+}  // namespace sync
+}  // namespace bytespirit
 
-#endif // GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_BARRIER_H_
+#endif  // GITHUB_BYTESPIRIT_CPPSYNC_SYNC_BARRIER_H_

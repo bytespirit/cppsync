@@ -8,17 +8,17 @@
  *
  */
 
-#ifndef GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_EVENT_H_
-#define GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_EVENT_H_
+#ifndef GITHUB_BYTESPIRIT_CPPSYNC_SYNC_EVENT_H_
+#define GITHUB_BYTESPIRIT_CPPSYNC_SYNC_EVENT_H_
 
-#include <mutex>
 #include <chrono>
 #include <condition_variable>
+#include <mutex>
 
 #include "lock.h"
 
 namespace bytespirit {
-namespace cppsync {
+namespace sync {
 
 // EventBase is the base class of event locks
 class EventBase : public Lock {
@@ -95,7 +95,7 @@ class AutoResetEvent : public EventBase {
   AutoResetEvent(bool set) : EventBase(set, true) {}
 };
 
-} // namespace cppsync
-} // namespace bytespirit
+}  // namespace sync
+}  // namespace bytespirit
 
-#endif // GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_EVENT_H_
+#endif  // GITHUB_BYTESPIRIT_CPPSYNC_SYNC_EVENT_H_

@@ -8,8 +8,8 @@
  *
  */
 
-#ifndef GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_SIGNAL_H_
-#define GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_SIGNAL_H_
+#ifndef GITHUB_BYTESPIRIT_CPPSYNC_SYNC_SIGNAL_H_
+#define GITHUB_BYTESPIRIT_CPPSYNC_SYNC_SIGNAL_H_
 
 #include <mutex>
 #include <chrono>
@@ -20,7 +20,7 @@
 #include "lock.h"
 
 namespace bytespirit {
-namespace cppsync {
+namespace sync {
 
 // Signal is a kind of `new` lock type which intends to help build a `lock chain` or a `lock tree`
 // When a signal node of the `chain` or `tree` is emitted, all children signal nodes will be emitted too.
@@ -109,7 +109,7 @@ class Signal : public Lock {
   std::unordered_map<uintptr_t, std::weak_ptr<Signal>> children_;
 };
 
-} // namespace cppsync
+} // namespace sync
 } // namespace bytespirit
 
-#endif // GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_SIGNAL_H_
+#endif // GITHUB_BYTESPIRIT_CPPSYNC_SYNC_SIGNAL_H_

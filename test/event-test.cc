@@ -10,13 +10,13 @@
 
 #include "gtest/gtest.h"
 
-#include "cppsync/event.h"
+#include "sync/event.h"
 
 #include <thread>
 
 TEST(EventTest, ManualResetEvent) {
   bool done = false;
-  bytespirit::cppsync::Event event;
+  bytespirit::sync::Event event;
   {
     auto thread = std::thread([&] {
       event.Wait();
@@ -48,7 +48,7 @@ TEST(EventTest, ManualResetEvent) {
 
 TEST(EventTest, AutoResetEvent) {
   bool done = false;
-  bytespirit::cppsync::AutoResetEvent event;
+  bytespirit::sync::AutoResetEvent event;
   {
     auto thread = std::thread([&] {
       event.Wait();

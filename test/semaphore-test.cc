@@ -10,7 +10,7 @@
 
 #include "gtest/gtest.h"
 
-#include "cppsync/semaphore.h"
+#include "sync/semaphore.h"
 
 #include <atomic>
 #include <thread>
@@ -18,7 +18,7 @@
 #include <chrono>
 
 TEST(SemaphoreTest, FromZero) {
-  bytespirit::cppsync::Semaphore sema;
+  bytespirit::sync::Semaphore sema;
   std::atomic_int counter = 0;
   std::thread thread([&] {
     while (true) {

@@ -8,17 +8,17 @@
  *
  */
 
-#ifndef GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_SEMAPHORE_H_
-#define GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_SEMAPHORE_H_
+#ifndef GITHUB_BYTESPIRIT_CPPSYNC_SYNC_SEMAPHORE_H_
+#define GITHUB_BYTESPIRIT_CPPSYNC_SYNC_SEMAPHORE_H_
 
-#include <mutex>
 #include <chrono>
 #include <condition_variable>
+#include <mutex>
 
 #include "lock.h"
 
 namespace bytespirit {
-namespace cppsync {
+namespace sync {
 
 // Semaphore implements the Semaphore lock
 class Semaphore : public Lock {
@@ -51,9 +51,7 @@ class Semaphore : public Lock {
     return false;
   }
   // Release
-  auto Release() -> void {
-    Release(1);
-  }
+  auto Release() -> void { Release(1); }
   // Release
   auto Release(int count) -> void {
     if (count > 0) {
@@ -67,14 +65,10 @@ class Semaphore : public Lock {
     }
   }
   // Get the count
-  auto get_count() -> int {
-    return count_;
-  }
+  auto get_count() -> int { return count_; }
 
  protected:
-  auto OnOneWakedUp() -> void {
-    --count_;
-  }
+  auto OnOneWakedUp() -> void { --count_; }
 
  private:
   int count_;
@@ -82,7 +76,7 @@ class Semaphore : public Lock {
   std::condition_variable cv_;
 };
 
-} // namespace cppsync
-} // namespace bytespirit
+}  // namespace sync
+}  // namespace bytespirit
 
-#endif // GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_SEMAPHORE_H_
+#endif  // GITHUB_BYTESPIRIT_CPPSYNC_SYNC_SEMAPHORE_H_

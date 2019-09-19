@@ -8,8 +8,8 @@
  *
  */
 
-#ifndef GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_SYNC_H_
-#define GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_SYNC_H_
+#ifndef GITHUB_BYTESPIRIT_CPPSYNC_SYNC_SYNC_H_
+#define GITHUB_BYTESPIRIT_CPPSYNC_SYNC_SYNC_H_
 
 #include "lock.h"
 #include "event.h"
@@ -17,4 +17,4 @@
 #include "semaphore.h"
 #include "signal.h"
 
-#endif // GITHUB_BYTESPIRIT_CPPSYNC_CPPSYNC_SYNC_H_
+#endif // GITHUB_BYTESPIRIT_CPPSYNC_SYNC_SYNC_H_
