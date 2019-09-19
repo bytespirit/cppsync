@@ -37,3 +37,13 @@ cc_test(
         "//sync:signal",
     ],
 )
+
+cc_test(
+    name = "waiting_queue-test",
+    srcs = ["waiting_queue-test.cc"],
+    copts = ["-Iexternal/gtest/include", "-std=c++1z"],
+    deps = [
+        "@com_google_googletest//:gtest_main",
+        "//sync:waiting_queue",
+    ],
+)

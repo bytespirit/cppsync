@@ -29,26 +29,17 @@ class Semaphore : public Lock {
   // Wait for the lock
   auto Wait() -> void override {
     std::unique_lock<std::mutex> lk(m_);
-    cv_.wait(lk, [this] { return count_ > 0; });
-    OnOneWakedUp();
+    cv_.wait(lk, std::bind(&Semaphore::OnOneCheck, this));
   }
   // Wait for the lock with timeout
   auto Wait(std::chrono::seconds timeout) -> bool override {
     std::unique_lock<std::mutex> lk(m_);
-    if (cv_.wait_for(lk, timeout, [this] { return count_ > 0; })) {
-      OnOneWakedUp();
-      return true;
-    }
-    return false;
+    return cv_.wait_for(lk, timeout, std::bind(&Semaphore::OnOneCheck, this));
   }
   // Wait for the lock with deadline
   auto Wait(std::chrono::system_clock::time_point deadline) -> bool override {
     std::unique_lock<std::mutex> lk(m_);
-    if (cv_.wait_until(lk, deadline, [this] { return count_ > 0; })) {
-      OnOneWakedUp();
-      return true;
-    }
-    return false;
+    return cv_.wait_until(lk, deadline, std::bind(&Semaphore::OnOneCheck, this));
   }
   // Release
   auto Release() -> void { Release(1); }
@@ -68,7 +59,13 @@ class Semaphore : public Lock {
   auto get_count() -> int { return count_; }
 
  protected:
-  auto OnOneWakedUp() -> void { --count_; }
+  auto OnOneCheck() -> bool {
+    if (count_ > 0) {
+      --count_;
+      return true;
+    }
+    return false;
+  }
 
  private:
   int count_;

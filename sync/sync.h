@@ -16,5 +16,6 @@
 #include "barrier.h"
 #include "semaphore.h"
 #include "signal.h"
+#include "waiting_queue.h"
 
 #endif // GITHUB_BYTESPIRIT_CPPSYNC_SYNC_SYNC_H_
